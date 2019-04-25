@@ -5,10 +5,10 @@ const { ObjectId } = Schema.Types;
 const ticketSchema = new Schema({
     
     tkName: { type: String},
-    tkCategory: { type: String },
-    tkZones: Number,
-    tkDuration: Number,
-    description: String,
+    tkImage: { type: String },
+    tkDescription:{ type: String },
+    tkZones: { type: Number, enum: [1,2,3,4,5,6]},
+    tkTrips: {},
     tkPrice: Number,
     userID: {
         type: ObjectId,
@@ -17,6 +17,6 @@ const ticketSchema = new Schema({
     
 });
 
-const Ticket = mongoose.model('Ticket', ticketSchema);
+const Ticket = mongoose.model('Tickets', ticketSchema);
 
 module.exports = Ticket;

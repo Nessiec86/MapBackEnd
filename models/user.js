@@ -4,8 +4,8 @@ const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
+  surname: { type: String },
   password: { type: String, required: true },
-  lastName: { type: String },
   email: { type: String },
   myTickets: [{type: ObjectId, ref: 'Ticket'}],
      

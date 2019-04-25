@@ -1,76 +1,75 @@
 const express = require('express');
-const createError = require('http-errors');
 const router = express.Router();
 
 const Ticket = require('../models/ticket');
 const User = require('../models/user');
 
-const {
-    protectedRoute,
-    anonRoute,
-    checkRole,
-    notifications,
-  } = require('../helpers/middlewares');
+// const {
+//     protectedRoute,
+//     anonRoute,
+//     checkRole,
+//     notifications,
+//   } = require('../helpers/middlewares');
   
 
-router.use(protectedRoute);
+// router.use(protectedRoute);
 
 router.get('/', (req, res, next) => {
     const userID = res.locals.currentUser._id;
-    res.render('user/user', { userID });
+    res.redirect('user/user', { userID });
 });
 
 router.get('/tickets', (req, res, next) => {
     Ticket.find()
     .then((tickets) => {
-    res.render('tickets/list', {tickets});
+    res.redirect('tickets/list', {tickets});
     })  
     .catch((error) => {
       next(error);
     })
 });
 
-// router.get('/trips/:id', async (req, res, next) => {
-//   const { id } = req.params;
-//   let usernames = [];
+router.get('/tickets/:id', async (req, res, next) => {
+  const { id } = req.params;
+  let usernames = [];
  
-//   try {
-//     const allUsers = await User.find()
-//     allUsers.forEach(user => {
-//       user.myTickets.forEach(tickets => {
-//         if (tickets == id) {
-//           usernames.push(user.username)
-//         }
-//       })
-//     })
-//     Trip.findById(id).then(trip => {
-//       res.render('trips/trip', { allUsers, id, trip, usernames });
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+  try {
+    const allUsers = await User.find()
+    allUsers.forEach(user => {
+      user.myTickets.forEach(tickets => {
+        if (tickets == id) {
+          usernames.push(user.username)
+        }
+      })
+    })
+    Ticket.findById(id).then(ticket => {
+      res.redirect('tickets/ticket', { allUsers, id, ticket, usernames });
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
-// router.post('/trips/:id', (req, res, next) => {
-//   const userId = res.locals.currentUser._id;
-//   const {id} = req.params;
-//   const user = res.locals.currentUser;
-//   User.findByIdAndUpdate(userId, {$push: { tripJoined: id }})
-//   .then((id) => {
-//          res.redirect('/user/joined');
-//         })
-//     .catch((error) => {
-//       next(error);
-//     })
-// })
+router.post('/tickets/:id', (req, res, next) => {
+  const userId = res.locals.currentUser._id;
+  const {id} = req.params;
+  const user = res.locals.currentUser;
+  User.findByIdAndUpdate(userId, {$push: { myTickets: id }})
+  .then((id) => {
+         res.redirect('/user/mytickets');
+        })
+    .catch((error) => {
+      next(error);
+    })
+})
   
 
 // router.get('/joined', (req, res, next) => {
 //   const userId = res.locals.currentUser._id;
-//   const tripJoined = res.locals.currentUser.tripJoined;
-//   const user = User.findById(userId).populate('tripJoined')
+//   const myTickets = res.locals.currentUser.myTickets;
+//   const user = User.findById(userId).populate('myTickets')
 //     .then((user) => {
-//       res.render('trips/joined', { tripJoined, user })
+//       res.redirect('tickets/myTickets', { myTickets, user })
 //    })
 //    .catch((error) => {
 //     next(error);
@@ -139,40 +138,32 @@ router.get('/tickets', (req, res, next) => {
 // });
 
  
-// router.get('/new', (req, res, next) => {
-//     const userID = res.locals.currentUser._id;
-//     const tripCategory = Trip.schema.obj.tripCategory.enum;
-//     const difficulty = Trip.schema.obj.difficulty.enum;
-//     const duration = Trip.schema.obj.duration;
-//     res.render('trips/new', { userID, tripCategory, difficulty, duration });
-// });
+router.get('/new', (req, res, next) => {
+    const userID = res.locals.currentUser._id;
+    const tkCategory = Trip.schema.obj.tkCategory.enum;
+    const tkZones = Trip.schema.obj.tkZones.enum;
+    const tkDuration = Trip.schema.obj.tkDuration;
+    res.redirect('tickets/new', { userID, tkCategory, tkZones, tkDuration });
+});
 
-// router.post('/new', (req, res, next) => {
-//     const { tripCategory, tripName, description, hours, mins, necessaryEquipment, petfriendly, difficulty, date } = req.body;
-//     const userID = req.session.currentUser._id;
-//     const listOfParticipants = req.session.currentUser._id;
-//     Trip.create({
-//       tripCategory,
-//       tripName,
-//       date,
-//       description,
-//       duration: {
-//         hours,
-//         mins
-//       },
-//       necessaryEquipment,
-//       petfriendly,
-//       difficulty,
-//       userID,
-//       listOfParticipants
-//     })
-//       .then((trip) => {
-//         res.render('user/user', { userID });
-//       })
-//       .catch((error) => {
-//         next(error);
-//       });
-//   });
+router.post('/new', (req, res, next) => {
+    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkPrice } = req.body;
+    const userID = req.session.currentUser._id;
+    Ticket.create({
+      tkName,
+      tkImage,
+      tkZones,
+      tkTrips,
+      tkDescription,
+      tkPrice
+    })
+      .then((ticket) => {
+        res.status(200).json(ticket);
+      })
+      .catch((error) => {
+        next(error);
+      });
+  });
 
 // router.get('/profile', (req, res, next) => {
 //   const user = req.session.currentUser;
