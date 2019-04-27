@@ -19,36 +19,36 @@ router.get('/', (req, res, next) => {
     res.redirect('user/user', { userID });
 });
 
-router.get('/tickets', (req, res, next) => {
+router.get('/tickets/list', (req, res, next) => {
     Ticket.find()
     .then((tickets) => {
-    res.redirect('tickets/list', {tickets});
-    })  
+      res.status(200).json(tickets);
+      })  
     .catch((error) => {
       next(error);
     })
 });
 
-router.get('/tickets/:id', async (req, res, next) => {
-  const { id } = req.params;
-  let usernames = [];
+// router.get('/tickets/:id', async (req, res, next) => {
+//   const { id } = req.params;
+//   let usernames = [];
  
-  try {
-    const allUsers = await User.find()
-    allUsers.forEach(user => {
-      user.myTickets.forEach(tickets => {
-        if (tickets == id) {
-          usernames.push(user.username)
-        }
-      })
-    })
-    Ticket.findById(id).then(ticket => {
-      res.redirect('tickets/ticket', { allUsers, id, ticket, usernames });
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+//   try {
+//     const allUsers = await User.find()
+//     allUsers.forEach(user => {
+//       user.myTickets.forEach(tickets => {
+//         if (tickets == id) {
+//           usernames.push(user.username)
+//         }
+//       })
+//     })
+//     Ticket.findById(id).then(ticket => {
+//       res.redirect('tickets/ticket', { allUsers, id, ticket, usernames });
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.post('/tickets/:id', (req, res, next) => {
   const userId = res.locals.currentUser._id;
