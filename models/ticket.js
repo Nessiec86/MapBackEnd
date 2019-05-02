@@ -10,7 +10,7 @@ const ticketSchema = new Schema({
     tkZones: { type: Number, enum: [1,2,3,4,5,6]},
     tkTrips: {},
     tkPrice: Number,
-    userID: {
+    userId: {
         type: ObjectId,
         ref: 'User',
     },

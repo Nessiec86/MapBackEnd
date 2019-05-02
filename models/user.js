@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
 const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
@@ -7,7 +8,10 @@ const userSchema = new Schema({
   surname: { type: String },
   password: { type: String, required: true },
   email: { type: String },
-  myTickets: [{type: ObjectId, ref: 'Ticket'}],
+  myTickets: [{
+    type: ObjectId,
+    ref: 'Ticket'
+  }],
      
 }, {
   timestamps: {
