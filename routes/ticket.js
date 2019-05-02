@@ -54,11 +54,13 @@ router.post('/new', (req, res, next) => {
   // SHOW MY TICKETS
   router.get('/joined', (req, res, next) => {
     const userId = req.session.currentUser._id;
-    User.findById(userId).populate('Ticket')
-    .then((data) => {
-      console.log('mis ticketsss!!!!!!!!!!!!!!' + data)
-        res.status(200).json(data);
-      })
+     
+    
+    User.findById(userId)
+    .populate('myTickets')
+    .then(({myTickets}) => {
+      res.status(200).json(myTickets);
+    })
       .catch((error) => {
         next(error);
      })
@@ -78,20 +80,18 @@ router.post('/new', (req, res, next) => {
     })
     
     // ADD TICKET
-    router.put('/list/:id', (req, res, next) => {
-      const {id} = req.params
+    router.put('/list/:ticketId', (req, res, next) => {
+      
+      const {ticketId} = req.params
       const userId = req.session.currentUser._id;
-      const UserUpdate = {
-        userId,
-      }
+      
 
-      Ticket.findByIdAndUpdate(id, UserUpdate)
-      .then(ticket => {
+      User.findByIdAndUpdate(userId, {$push: { myTickets: ticketId }})
+      .then(user => {
         res.status(200)
-        console.log(ticket)
         res.json({
           message: 'Added',
-          ticket,
+          user,
         })
       })
       .catch(next)
