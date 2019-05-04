@@ -13,9 +13,9 @@ require('dotenv').config();
 const auth = require('./routes/auth');
 const ticket = require('./routes/ticket');
 
+
 mongoose
   .connect(process.env.DB_URL, {
-  // .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
@@ -67,7 +67,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', auth);
 app.use('/tickets', ticket);
 
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404).json({ code: 'not found' });
@@ -84,8 +83,11 @@ app.use((err, req, res, next) => {
   }
 });
 
+<<<<<<< HEAD
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, './index.html'));
 //   });
 
+=======
+>>>>>>> dev
 module.exports = app;
