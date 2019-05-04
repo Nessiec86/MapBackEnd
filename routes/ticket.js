@@ -14,10 +14,10 @@ const {
   } = require('../helpers/middlewares');
   
 
-router.get('/', (req, res, next) => {
-    const userID = req.session.currentUser;
-    res.redirect('user/user', { userID });
-});
+// router.get('/', (req, res, next) => {
+//     const userID = req.session.currentUser;
+//     res.redirect('user/user', { userID });
+// });
 
 // TICKETS LIST
 router.get('/list', (req, res, next) => {
