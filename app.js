@@ -1,21 +1,21 @@
 const express = require('express');
 const path = require('path');
+const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const flash = require('connect-flash');
 const cors = require('cors');
 require('dotenv').config();
 
 const auth = require('./routes/auth');
 const ticket = require('./routes/ticket');
 
+
 mongoose
   .connect(process.env.DB_URL, {
-  // .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
@@ -67,7 +67,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', auth);
 app.use('/tickets', ticket);
 
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404).json({ code: 'not found' });
@@ -83,9 +82,5 @@ app.use((err, req, res, next) => {
     res.status(statusError).json(err);
   }
 });
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './index.html'));
-  });
 
 module.exports = app;
