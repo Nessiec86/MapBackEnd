@@ -4,15 +4,15 @@ const router = express.Router();
 const Ticket = require('../models/ticket');
 const User = require('../models/user');
 
-// const {
-//     protectedRoute,
-//     anonRoute,
-//     checkRole,
-//     notifications,
-//   } = require('../helpers/middlewares');
+const {
+    isLoggedIn,
+    isNotLoggedIn,
+    protectedRoute,
+    anonRoute,
+    checkRole,
+    notifications,
+  } = require('../helpers/middlewares');
   
-
-// router.use(protectedRoute);
 
 router.get('/', (req, res, next) => {
     const userID = req.session.currentUser;
@@ -81,7 +81,7 @@ router.post('/new', (req, res, next) => {
     
     // ADD TICKET
     router.put('/list/:ticketId', (req, res, next) => {
-      
+      console.log(req.params)
       const {ticketId} = req.params
       const userId = req.session.currentUser._id;
       
