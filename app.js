@@ -11,7 +11,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const auth = require('./routes/auth');
-const ticket = require('./routes/ticket');
+// const ticket = require('./routes/ticket');
 
 mongoose
   .connect(process.env.DB_URL, {
@@ -65,7 +65,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
-app.use('/tickets', ticket);
+// app.use('/tickets', ticket);
 
 
 // catch 404 and forward to error handler
