@@ -54,7 +54,6 @@ router.post('/new', (req, res, next) => {
   // SHOW MY TICKETS
   router.get('/joined', (req, res, next) => {
     const userId = req.session.currentUser._id;
-     
     
     User.findById(userId)
     .populate('myTickets')
@@ -81,11 +80,9 @@ router.post('/new', (req, res, next) => {
     
     // ADD TICKET
     router.put('/list/:ticketId', (req, res, next) => {
-      console.log(req.params)
       const {ticketId} = req.params
       const userId = req.session.currentUser._id;
       
-
       User.findByIdAndUpdate(userId, {$push: { myTickets: ticketId }})
       .then(user => {
         res.status(200)
@@ -121,12 +118,13 @@ router.post('/new', (req, res, next) => {
       })
       .catch(next)
   })
+
   
-  // DELETE TICKET
-  router.delete('/list/:id', (req, res, next) => {
-    const {id} = req.params
+  // DELETE TICKET FROM DB
+  router.delete('/list/:ticketId', (req, res, next) => {
+    const {ticketId} = req.params
   
-    Ticket.findByIdAndDelete(id)
+    Ticket.findByIdAndDelete(ticketId)
       .then(ticket => {
         res.status(200)
         res.json({
@@ -136,7 +134,22 @@ router.post('/new', (req, res, next) => {
       })
       .catch(next)
   })
-  
-  
+
+  // DELETE TICKET FROM USER
+  router.post('/edit/:ticketId', (req, res, next) => {
+    const { ticketId } = req.params
+    const userId = req.session.currentUser._id;
+        
+        User.findByIdAndUpdate(userId, {$pull: { myTickets: ticketId }})
+        .then(user => {
+          res.status(200)
+          res.json({
+            message: 'removed',
+            user,
+          })
+        })
+        .catch(next)
+   })
+
 
 module.exports = router;
