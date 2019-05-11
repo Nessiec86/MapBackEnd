@@ -11,6 +11,10 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Ticket'
   }],
+  myCard: [{
+    type: ObjectId,
+    ref: 'Card'
+  }],
      
 }, {
   timestamps: {
