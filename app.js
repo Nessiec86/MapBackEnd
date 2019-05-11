@@ -12,10 +12,7 @@ require('dotenv').config();
 
 const auth = require('./routes/auth');
 const ticket = require('./routes/ticket');
-<<<<<<< HEAD
-=======
 const card = require('./routes/card');
->>>>>>> dev
 
 mongoose
   .connect(process.env.DB_URL, {
