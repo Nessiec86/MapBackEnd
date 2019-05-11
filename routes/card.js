@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Ticket = require('../models/ticket');
+const Card = require('../models/card');
 const User = require('../models/user');
 
 const {
@@ -14,88 +14,42 @@ const {
   } = require('../helpers/middlewares');
   
 
-// router.get('/', (req, res, next) => {
-//     const userID = req.session.currentUser;
-//     res.redirect('user/user', { userID });
-// });
 
-// TICKETS LIST
-router.get('/list', (req, res, next) => {
-    Ticket.find()
-      .then((ticket) => {
-      res.status(200).json(ticket);
-    })
-    .catch((error) => {
-      next(error);
-    });
-});
 
-// CREATE NEW TICKET
-router.post('/new', (req, res, next) => {
-    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkPrice } = req.body;
+// CREATE NEW CARD
+router.post('/pay', (req, res, next) => {
+    const { cardname, cardnum, vadil, controlnum } = req.body;
     const userId = req.session.currentUser._id;
-    Ticket.create({
-      tkName,
-      tkImage,
-      tkZones,
-      tkTrips,
-      tkDescription,
-      tkPrice,
-      // userId,
+    Card.create({
+      cardname,
+      cardnum,
+      vadil,
+      controlnum,
+      userId,
     })
-      .then((ticket) => {
-        res.status(200).json(ticket);
+      .then((card) => {
+        res.status(200).json(card);
       })
       .catch((error) => {
         next(error);
       });
   });
 
-  // SHOW MY TICKETS
-  router.get('/joined', (req, res, next) => {
-    const userId = req.session.currentUser._id;
-    
-    User.findById(userId)
-    .populate('myTickets')
-    .then(({myTickets}) => {
-      res.status(200).json(myTickets);
-    })
-      .catch((error) => {
-        next(error);
-     })
-   })
    
-   
-   // SHOW TICKET
-   router.get('/list/:id', (req, res, next) => {
+   // SHOW CARD
+   router.get('/private/profile/pay/:id', (req, res, next) => {
      const {id} = req.params
      
      Ticket.findById(id)
-     .then(ticket => {
+     .then(card => {
        res.status(200)
        res.json(ticket)
       })
       .catch(next)
     })
     
-    // ADD TICKET
-    router.put('/list/:ticketId', (req, res, next) => {
-      const {ticketId} = req.params
-      const userId = req.session.currentUser._id;
-      
-      User.findByIdAndUpdate(userId, {$push: { myTickets: ticketId }})
-      .then(user => {
-        res.status(200)
-        res.json({
-          message: 'Added',
-          user,
-        })
-      })
-      .catch(next)
-
-     })
-
-  // TICKET UPDATE
+    
+  // CARD UPDATE
   router.put('/list/:id', (req, res, next) => {
     const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkPrice } = req.body;
     const {id} = req.params
@@ -120,7 +74,7 @@ router.post('/new', (req, res, next) => {
   })
 
   
-  // DELETE TICKET FROM DB
+  // DELETE CARD FROM DB
   router.delete('/list/:ticketId', (req, res, next) => {
     const {ticketId} = req.params
   
@@ -135,7 +89,7 @@ router.post('/new', (req, res, next) => {
       .catch(next)
   })
 
-  // DELETE TICKET FROM USER
+  // DELETE CARD FROM USER
   router.post('/edit/:ticketId', (req, res, next) => {
     const { ticketId } = req.params
     const userId = req.session.currentUser._id;

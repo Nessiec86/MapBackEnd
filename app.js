@@ -12,6 +12,10 @@ require('dotenv').config();
 
 const auth = require('./routes/auth');
 const ticket = require('./routes/ticket');
+<<<<<<< HEAD
+=======
+const card = require('./routes/card');
+>>>>>>> dev
 
 mongoose
   .connect(process.env.DB_URL, {
@@ -57,7 +61,7 @@ app.use(
     },
   }),
 );
-app.use(flash());
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -66,6 +70,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/tickets', ticket);
+app.use('/tickets', card);
 
 
 // catch 404 and forward to error handler
