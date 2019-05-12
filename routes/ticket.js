@@ -32,7 +32,7 @@ router.get('/list', (req, res, next) => {
 
 // CREATE NEW TICKET
 router.post('/new', (req, res, next) => {
-    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkPrice } = req.body;
+    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkAge, tkPrice } = req.body;
     const userId = req.session.currentUser._id;
     Ticket.create({
       tkName,
@@ -40,6 +40,7 @@ router.post('/new', (req, res, next) => {
       tkZones,
       tkTrips,
       tkDescription,
+      tkAge,
       tkPrice,
       // userId,
     })
@@ -96,8 +97,8 @@ router.post('/new', (req, res, next) => {
      })
 
   // TICKET UPDATE
-  router.put('/list/:id', (req, res, next) => {
-    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkPrice } = req.body;
+  router.put('/list/update/:id', (req, res, next) => {
+    const { tkName, tkImage, tkZones, tkTrips, tkDescription, tkAge, tkPrice } = req.body;
     const {id} = req.params
     const TicketUpdate = {
       tkName,
@@ -105,6 +106,7 @@ router.post('/new', (req, res, next) => {
       tkZones,
       tkTrips,
       tkDescription,
+      tkAge,
       tkPrice,
     }
   

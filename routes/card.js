@@ -37,10 +37,10 @@ router.post('/pay', (req, res, next) => {
 
    
    // SHOW CARD
-   router.get('/private/profile/pay/:id', (req, res, next) => {
+   router.get('/pay/:id', (req, res, next) => {
      const {id} = req.params
      
-     Ticket.findById(id)
+     Card.findById(id)
      .then(card => {
        res.status(200)
        res.json(ticket)
