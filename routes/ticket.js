@@ -69,7 +69,7 @@ router.post('/new', (req, res, next) => {
    
    // SHOW TICKET
    router.get('/list/:id', (req, res, next) => {
-     const {id} = req.params
+    const {id} = req.params
      
      Ticket.findById(id)
      .then(ticket => {

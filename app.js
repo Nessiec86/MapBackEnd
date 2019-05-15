@@ -67,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/tickets', ticket);
-app.use('/tickets', card);
+app.use('/profile', card);
 
 
 // catch 404 and forward to error handler

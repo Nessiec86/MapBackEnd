@@ -11,7 +11,7 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Ticket'
   }],
-  myCard: [{
+  myCards: [{
     type: ObjectId,
     ref: 'Card'
   }],
