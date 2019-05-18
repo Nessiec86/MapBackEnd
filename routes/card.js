@@ -36,8 +36,8 @@ router.post('/pay', (req, res, next) => {
   });
 
    
-   // SHOW CARD
-   router.get('/card/', (req, res, next) => {
+  // SHOW MY CARDS
+  router.get('/card/', (req, res, next) => {
     const {userId} = req.session.currentUser._id;
      
     Card.find(userId)
@@ -48,19 +48,6 @@ router.post('/pay', (req, res, next) => {
       .catch(next)
     })
     
-  // SHOW MY CARDS
-  router.get('/mycards', (req, res, next) => {
-    const userId = req.session.currentUser._id;
-    
-    User.findById(userId)
-    .populate('myCards')
-    .then((data) => {
-      res.status(200).json(myCard);
-    })
-      .catch((error) => {
-        next(error);
-     })
-   })
     
   // CARD UPDATE
   router.put('/list/:id', (req, res, next) => {
@@ -102,21 +89,6 @@ router.post('/pay', (req, res, next) => {
       .catch(next)
   })
 
-  // DELETE CARD FROM USER
-  router.post('/edit/:ticketId', (req, res, next) => {
-    const { ticketId } = req.params
-    const userId = req.session.currentUser._id;
-        
-        User.findByIdAndUpdate(userId, {$pull: { myTickets: ticketId }})
-        .then(user => {
-          res.status(200)
-          res.json({
-            message: 'removed',
-            user,
-          })
-        })
-        .catch(next)
-   })
-
+  
 
 module.exports = router;

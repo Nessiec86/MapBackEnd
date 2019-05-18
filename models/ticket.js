@@ -9,7 +9,7 @@ const ticketSchema = new Schema({
     tkDescription:{ type: String },
     tkAge: { type: String, enum: [ '16','25','60','Adult' ]},
     tkZones: { type: Number, enum: [1,2,3,4,5,6]},
-    tkTrips: {},
+    tkTrips: Number,
     tkPrice: Number,
     
 });

@@ -15,7 +15,10 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Card'
   }],
-     
+  fullTicket : [{
+    
+  }],   
+
 }, {
   timestamps: {
     createdAt: 'created_at',
