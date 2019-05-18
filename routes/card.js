@@ -40,7 +40,7 @@ router.post('/pay', (req, res, next) => {
   router.get('/card/', (req, res, next) => {
     const {userId} = req.session.currentUser._id;
      
-    Card.findById(userId)
+    Card.find(userId)
      .then(card => {
        res.status(200)
        res.json(card)
