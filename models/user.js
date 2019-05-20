@@ -6,6 +6,7 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   surname: { type: String, required: true },
   password: { type: String, required: true },
+  age: { type: Number },
   email: { type: String },
   myTickets: [{
     type: ObjectId,
@@ -15,10 +16,7 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Card'
   }],
-  fullTicket : [{
-    
-  }],   
-
+  fullTicket : [{}],   
 }, {
   timestamps: {
     createdAt: 'created_at',

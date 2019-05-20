@@ -19,7 +19,6 @@ router.get('/me', isLoggedIn(), (req, res, next) => {
 router.post('/login', isNotLoggedIn(), validationLoggin(), 
   async (req, res, next) => {
     const { username, password } = req.body;
-
     
     try {
       const user = await User.findOne({ username });
@@ -43,7 +42,7 @@ router.post(
   isNotLoggedIn(),
   validationLoggin(),
   async (req, res, next) => {
-    const { username, surname, password } = req.body;
+    const { username, surname, age, email, password } = req.body;
     try {
       const user = await User.findOne({ username }, 'username');
       if (user) {
@@ -51,7 +50,7 @@ router.post(
       } else {
         const salt = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync(password, salt);
-        const newUser = await User.create({ username, surname, password: hashPass });
+        const newUser = await User.create({ username, surname, age, email, password: hashPass });
         req.session.currentUser = newUser;
         res.status(200).json(newUser);
       }
@@ -71,5 +70,59 @@ router.get('/private', isLoggedIn(), (req, res, next) => {
     message: 'This is a private message',
   });
 });
+
+
+//UPDATE TRIPS
+
+router.put('/ticket/update/', (req, res, next) => {
+  const { counter, ticketId } = req.body;
+  const userId = req.session.currentUser._id;
+  console.log(ticketId)
+
+    User.find({fullTickets: {ticketId}})
+      .then(ticket => {
+          res.json({
+          message: 'updated',
+          ticket
+        })
+      })
+      .catch(next)
+      })
+    
+// UPDATE USER 
+
+router.put('/profile/edit', (req, res, next) => {
+  const { username, surname, age, email } = req.body;
+  const userId = req.session.currentUser._id;
+  const UserUpdate = {
+    username,
+    surname,
+    age,
+    email, 
+  }
+  User.findByIdAndUpdate(userId, UserUpdate)
+    .then(user => {
+      res.status(200)
+      res.json({
+        message: 'updated',
+        user,
+      })
+    })
+    .catch(next)
+    })
+
+  // SHOW MY USER
+
+  router.get('/profile/', (req, res, next) => {
+    const userId = req.session.currentUser._id;
+    
+    User.findById(userId)
+     .then(user => {
+       res.status(200)
+       res.json(user)
+      })
+      .catch(next)
+    })
+  
 
 module.exports = router;

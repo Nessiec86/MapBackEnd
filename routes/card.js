@@ -38,13 +38,12 @@ router.post('/pay', (req, res, next) => {
    
   // SHOW MY CARDS
   router.get('/card/', (req, res, next) => {
-    const {userId} = req.session.currentUser._id;
-     
-    Card.findById(userId)
+    const userId = req.session.currentUser._id;
+    
+    Card.find({userId})
      .then(card => {
        res.status(200)
        res.json(card)
-       console.log(card)
       })
       .catch(next)
     })
@@ -76,15 +75,16 @@ router.post('/pay', (req, res, next) => {
 
   
   // DELETE CARD FROM DB
-  router.delete('/list/:ticketId', (req, res, next) => {
-    const {ticketId} = req.params
-  
-    Ticket.findByIdAndDelete(ticketId)
-      .then(ticket => {
+  router.delete('/card/:cardId', (req, res, next) => {
+    const { cardId } = req.params
+
+    Card.findByIdAndDelete(cardId)
+    .then(card => {
+      console.log(card)
         res.status(200)
         res.json({
           message: 'deleted',
-          ticket,
+          card,
         })
       })
       .catch(next)
