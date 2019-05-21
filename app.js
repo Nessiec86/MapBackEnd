@@ -16,7 +16,6 @@ const card = require('./routes/card');
 
 mongoose
   .connect(process.env.DB_URL, {
-  // .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
@@ -36,13 +35,6 @@ app.use(
     origin: [process.env.PUBLIC_DOMAIN],
   }),
 );
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,OPTIONS,DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
 
 app.use(
   session({
@@ -64,11 +56,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/auth', auth);
 app.use('/tickets', ticket);
 app.use('/profile', card);
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -78,7 +68,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // always log the error
   console.error('ERROR', req.method, req.path, err);
-
   // only render if the error ocurred before sending the response
   if (!res.headersSent) {
     const statusError = err.status || '500';

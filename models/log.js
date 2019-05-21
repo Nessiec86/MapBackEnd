@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const logSchema = new Schema({
-    
     tkName: { type: String},
     tkCategory: { type: String },
     tkZones: Number,
@@ -14,7 +13,6 @@ const logSchema = new Schema({
         type: ObjectId,
         ref: 'User',
     },
-    
 });
 
 const Log = mongoose.model('Log', logSchema);

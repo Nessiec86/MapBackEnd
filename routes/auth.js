@@ -19,7 +19,6 @@ router.get('/me', isLoggedIn(), (req, res, next) => {
 router.post('/login', isNotLoggedIn(), validationLoggin(), 
   async (req, res, next) => {
     const { username, password } = req.body;
-    
     try {
       const user = await User.findOne({ username });
       if (!user) {
@@ -34,7 +33,6 @@ router.post('/login', isNotLoggedIn(), validationLoggin(),
         next(error);
     }
   },
-
 );
 
 router.post(
@@ -71,26 +69,21 @@ router.get('/private', isLoggedIn(), (req, res, next) => {
   });
 });
 
-
 //UPDATE TRIPS
-
 router.put('/ticket/update/', (req, res, next) => {
   const { counter, ticketId } = req.body;
   const userId = req.session.currentUser._id;
-  console.log(ticketId)
-
-    User.find({fullTickets: {ticketId}})
-      .then(ticket => {
-          res.json({
-          message: 'updated',
-          ticket
-        })
+  User.find({fullTickets: {ticketId}})
+    .then(ticket => {
+      res.json({
+        message: 'updated',
+        ticket
       })
-      .catch(next)
-      })
+    })
+    .catch(next)
+})
     
 // UPDATE USER 
-
 router.put('/profile/edit', (req, res, next) => {
   const { username, surname, age, email } = req.body;
   const userId = req.session.currentUser._id;
@@ -109,20 +102,17 @@ router.put('/profile/edit', (req, res, next) => {
       })
     })
     .catch(next)
-    })
+})
 
-  // SHOW MY USER
-
-  router.get('/profile/', (req, res, next) => {
-    const userId = req.session.currentUser._id;
-    
-    User.findById(userId)
-     .then(user => {
-       res.status(200)
-       res.json(user)
-      })
-      .catch(next)
+// SHOW MY USER
+router.get('/profile/', (req, res, next) => {
+  const userId = req.session.currentUser._id;
+  User.findById(userId)
+    .then(user => {
+      res.status(200)
+      res.json(user)
     })
-  
+    .catch(next)
+})
 
 module.exports = router;
